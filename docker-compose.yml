@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: library
     volumes:
-      - './src/main/resources/sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql'
+      - './infrastructure/sql/employee.sql:/docker-entrypoint-initdb.d/employee.sql'
     ports:
       - '127.0.0.1:3306:3306'
   backend:
