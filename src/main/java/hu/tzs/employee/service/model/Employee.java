@@ -1,4 +1,4 @@
-package hu.tzs.employee.model;
+package hu.tzs.employee.service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
