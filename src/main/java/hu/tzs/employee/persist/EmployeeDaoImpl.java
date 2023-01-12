@@ -1,16 +1,16 @@
 package hu.tzs.employee.persist;
 
-import hu.tzs.employee.service.model.Department;
+import hu.tzs.employee.persist.entity.EmployeeEntity;
+import hu.tzs.employee.persist.entity.TitleEntity;
+import hu.tzs.employee.persist.repository.EmployeeRepository;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
-import hu.tzs.employee.persist.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +31,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 entity.getLastName(),
                 entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
                 entity.getHireDate(),
-                "",
+                getCurrentTitle(entity),
                 0,
                 null);
             return employee;
         }).collect(Collectors.toList());
+    }
+
+    private String getCurrentTitle(EmployeeEntity employee){
+        List<TitleEntity> titles = employee.getTitles().stream().filter(title -> title.getToDate().after(new Date())).collect(
+            Collectors.toList());
+        if(titles.size() == 1){
+            return titles.get(0).getTitle();
+        }
+        return "";
     }
 }

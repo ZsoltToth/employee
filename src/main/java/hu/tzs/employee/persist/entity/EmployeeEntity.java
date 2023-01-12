@@ -8,8 +8,8 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Date;
 
@@ -18,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity(name = "employees")
+@Table(name="employees")
 public class EmployeeEntity {
 
     @Id
@@ -37,7 +38,8 @@ public class EmployeeEntity {
     @Column(name="birth_date")
     private Date birthDate;
 
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "employee")
+    @ToString.Exclude
     private Collection<TitleEntity> titles;
 //    private String title;
 //    private int salary;
