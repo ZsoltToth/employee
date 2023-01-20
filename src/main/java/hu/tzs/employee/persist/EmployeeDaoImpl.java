@@ -1,6 +1,7 @@
 package hu.tzs.employee.persist;
 
 import hu.tzs.employee.persist.entity.EmployeeEntity;
+import hu.tzs.employee.persist.entity.SalaryEntity;
 import hu.tzs.employee.persist.entity.TitleEntity;
 import hu.tzs.employee.persist.repository.EmployeeRepository;
 import hu.tzs.employee.service.model.Employee;
@@ -32,7 +33,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
                 entity.getHireDate(),
                 getCurrentTitle(entity),
-                0,
+                getCurrentSalary(entity),
                 null);
             return employee;
         }).collect(Collectors.toList());
@@ -45,5 +46,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
             return titles.get(0).getTitle();
         }
         return "";
+    }
+
+    private int getCurrentSalary(EmployeeEntity employee){
+        List<SalaryEntity> salaries = employee.getSalaries().stream().filter(salary -> salary.getToDate().after(new Date())).collect(
+            Collectors.toList());
+        if(salaries.size() == 1){
+            return salaries.get(0).getSalary();
+        }
+        return -1;
     }
 }

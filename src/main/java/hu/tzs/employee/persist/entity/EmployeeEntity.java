@@ -41,7 +41,8 @@ public class EmployeeEntity {
     @OneToMany(mappedBy = "employee")
     @ToString.Exclude
     private Collection<TitleEntity> titles;
-//    private String title;
-//    private int salary;
-//    private Department department;
+
+    @OneToMany(mappedBy = "employee")
+    @ToString.Exclude
+    private Collection<SalaryEntity> salaries;
 }
