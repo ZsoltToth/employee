@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-
 @Service
 @RequiredArgsConstructor
 public class EmployeeManagerServiceImpl implements EmployeeManagerService {

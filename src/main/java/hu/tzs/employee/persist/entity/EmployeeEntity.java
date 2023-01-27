@@ -18,24 +18,25 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity(name = "employees")
-@Table(name="employees")
+@Table(name = "employees")
 public class EmployeeEntity {
 
     @Id
-    @Column(name="emp_no")
+    @Column(name = "emp_no")
     private int empNo;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
+
     private char gender;
 
-    @Column(name="hire_date")
+    @Column(name = "hire_date")
     private Date hireDate;
 
-    @Column(name="birth_date")
+    @Column(name = "birth_date")
     private Date birthDate;
 
     @OneToMany(mappedBy = "employee")

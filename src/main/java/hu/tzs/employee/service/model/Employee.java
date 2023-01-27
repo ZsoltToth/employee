@@ -10,11 +10,18 @@ import java.util.Date;
 public class Employee {
 
     private int empNo;
+
     private String firstName;
+
     private String lastName;
+
     private Gender gender;
+
     private Date hireDate;
+
     private String title;
+
     private int salary;
+
     private Department department;
 }

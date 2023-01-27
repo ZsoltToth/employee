@@ -39,19 +39,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }).collect(Collectors.toList());
     }
 
-    private String getCurrentTitle(EmployeeEntity employee){
-        List<TitleEntity> titles = employee.getTitles().stream().filter(title -> title.getToDate().after(new Date())).collect(
-            Collectors.toList());
-        if(titles.size() == 1){
+    private String getCurrentTitle(EmployeeEntity employee) {
+        List<TitleEntity> titles =
+            employee.getTitles().stream().filter(title -> title.getToDate().after(new Date())).collect(
+                Collectors.toList());
+        if (titles.size() == 1) {
             return titles.get(0).getTitle();
         }
         return "";
     }
 
-    private int getCurrentSalary(EmployeeEntity employee){
-        List<SalaryEntity> salaries = employee.getSalaries().stream().filter(salary -> salary.getToDate().after(new Date())).collect(
-            Collectors.toList());
-        if(salaries.size() == 1){
+    private int getCurrentSalary(EmployeeEntity employee) {
+        List<SalaryEntity> salaries =
+            employee.getSalaries().stream().filter(salary -> salary.getToDate().after(new Date())).collect(
+                Collectors.toList());
+        if (salaries.size() == 1) {
             return salaries.get(0).getSalary();
         }
         return -1;

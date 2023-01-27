@@ -8,6 +8,7 @@ import lombok.Getter;
 public class Department {
 
     private String deptNo;
+
     private String name;
 
 }

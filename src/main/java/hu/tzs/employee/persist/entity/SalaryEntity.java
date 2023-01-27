@@ -20,10 +20,9 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity(name = "salaries")
-@Table(name="salaries")
+@Table(name = "salaries")
 @IdClass(SalaryEntity.SalaryEntityId.class)
 public class SalaryEntity {
-
 
     @Id
     @Column(name = "emp_no")
@@ -49,10 +48,12 @@ public class SalaryEntity {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class SalaryEntityId implements Serializable{
+    public static class SalaryEntityId implements Serializable {
 
         private int empNo;
+
         private int salary;
+
         private Date fromDate;
     }
 }

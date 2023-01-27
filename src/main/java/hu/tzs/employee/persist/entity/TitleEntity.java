@@ -20,10 +20,9 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity(name = "titles")
-@Table(name="titles")
+@Table(name = "titles")
 @IdClass(TitleEntity.TitleEntityId.class)
 public class TitleEntity {
-
 
     @Id
     @Column(name = "emp_no")
@@ -49,10 +48,12 @@ public class TitleEntity {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class TitleEntityId implements Serializable{
+    public static class TitleEntityId implements Serializable {
 
         private int empNo;
+
         private String title;
+
         private Date fromDate;
     }
 }

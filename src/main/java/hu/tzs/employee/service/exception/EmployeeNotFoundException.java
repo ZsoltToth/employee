@@ -1,7 +1,5 @@
 package hu.tzs.employee.service.exception;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Optional;
 
 public class EmployeeNotFoundException extends EmployeeAppException {
