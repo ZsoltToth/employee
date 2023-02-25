@@ -12,6 +12,7 @@ on:
 
 jobs:
   quality:
+    name: 'CheckStyle'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,6 +26,7 @@ jobs:
         run: mvn -B verify
 
   build:
+    name: 'Package'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
