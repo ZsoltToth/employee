@@ -40,6 +40,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     private String getCurrentTitle(EmployeeEntity employee) {
+        if (employee.getTitles() == null) {
+            return "";
+        }
         List<TitleEntity> titles =
             employee.getTitles().stream().filter(title -> title.getToDate().after(new Date())).collect(
                 Collectors.toList());
@@ -50,6 +53,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     private int getCurrentSalary(EmployeeEntity employee) {
+        if (employee.getSalaries() == null) {
+            return -1;
+        }
         List<SalaryEntity> salaries =
             employee.getSalaries().stream().filter(salary -> salary.getToDate().after(new Date())).collect(
                 Collectors.toList());
