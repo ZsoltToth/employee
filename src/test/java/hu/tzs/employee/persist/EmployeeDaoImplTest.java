@@ -1,5 +1,7 @@
 package hu.tzs.employee.persist;
 
+import hu.tzs.employee.persist.entity.DepartmentEmployee;
+import hu.tzs.employee.persist.entity.DepartmentEntity;
 import hu.tzs.employee.persist.entity.EmployeeEntity;
 import hu.tzs.employee.persist.entity.SalaryEntity;
 import hu.tzs.employee.persist.entity.TitleEntity;
@@ -73,6 +75,7 @@ class EmployeeDaoImplTest {
         entity.setHireDate(dateFormat.parse("2000-01-01"));
         entity.setSalaries(List.of(salary));
         entity.setTitles(List.of(title));
+        entity.setDepartments(List.of(DepartmentEmployee.builder().deptNo("01").empNo(1).fromDate(dateFormat.parse("1990-01-01")).toDate(dateFormat.parse("9999-01-01")).department(new DepartmentEntity("01", "Department")).build()));
         Page<EmployeeEntity> repositoryResponse = new PageImpl<>(List.of(entity));
         when(repository.findAll(any(PageRequest.class))).thenReturn(repositoryResponse);
         // when
@@ -86,6 +89,7 @@ class EmployeeDaoImplTest {
         assertThat(employee.getGender()).isEqualByComparingTo(Gender.FEMALE);
         assertThat(employee.getSalary()).isEqualTo(100);
         assertThat(employee.getTitle()).isEqualTo("Staff");
+        assertThat(employee.getDepartment()).isNotNull();
     }
 
     @Test

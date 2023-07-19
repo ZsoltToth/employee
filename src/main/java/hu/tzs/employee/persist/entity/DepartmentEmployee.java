@@ -1,6 +1,7 @@
 package hu.tzs.employee.persist.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,6 +17,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "dept_emp")
 @Table(name = "dept_emp")
 @IdClass(DepartmentEmployee.DepartmentEmployeeId.class)
