@@ -28,6 +28,7 @@ public class EmployeeController {
                 .hireDate(employee.getHireDate().toString())
                 .salary(employee.getSalary())
                 .title(employee.getTitle())
+                .department(employee.getDepartment() != null ? employee.getDepartment().getName() : "")
                 .build()
         ).collect(Collectors.toList());
     }

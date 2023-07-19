@@ -1,9 +1,12 @@
 package hu.tzs.employee.persist;
 
+import hu.tzs.employee.persist.entity.DepartmentEmployee;
+import hu.tzs.employee.persist.entity.DepartmentEntity;
 import hu.tzs.employee.persist.entity.EmployeeEntity;
 import hu.tzs.employee.persist.entity.SalaryEntity;
 import hu.tzs.employee.persist.entity.TitleEntity;
 import hu.tzs.employee.persist.repository.EmployeeRepository;
+import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +37,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 entity.getHireDate(),
                 getCurrentTitle(entity),
                 getCurrentSalary(entity),
-                null);
+                getCurrentDepartment(entity));
             return employee;
         }).collect(Collectors.toList());
     }
@@ -63,5 +66,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
             return salaries.get(0).getSalary();
         }
         return -1;
+    }
+
+    private Department getCurrentDepartment(EmployeeEntity employee) {
+        if (employee.getDepartments() == null || employee.getDepartments().isEmpty()) {
+            return null;
+        }
+        List<DepartmentEntity> departmentEntities = employee.getDepartments()
+            .stream()
+            .filter(department -> department.getToDate().after(new Date()))
+            .map(DepartmentEmployee::getDepartment)
+            .collect(Collectors.toList());
+        if (departmentEntities.isEmpty()) {
+            return null;
+        }
+        DepartmentEntity currentDepartmentEntity = departmentEntities.get(0);
+        return new Department(currentDepartmentEntity.getDepartmentNo(), currentDepartmentEntity.getName());
     }
 }

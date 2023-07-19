@@ -21,4 +21,5 @@ public class EmployeeDto {
 
     private int salary;
 
+    private String department;
 }
