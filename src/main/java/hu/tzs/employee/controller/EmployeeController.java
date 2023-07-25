@@ -24,19 +24,20 @@ public class EmployeeController {
 
     @GetMapping("")
     public Collection<EmployeeDto> fetchAll() {
-        return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto).collect(Collectors.toList());
+        return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{empNo}")
-    public EmployeeDto fetchEmployee(@RequestParam int empNo){
-        try{
+    public EmployeeDto fetchEmployee(@RequestParam int empNo) {
+        try {
             return mapEmployeeToEmployeeDto(employeeManagerService.getEmployee(empNo));
         } catch (EmployeeNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    private EmployeeDto mapEmployeeToEmployeeDto(Employee employee){
+    private EmployeeDto mapEmployeeToEmployeeDto(Employee employee) {
         return EmployeeDto.builder()
             .empNo(employee.getEmpNo())
             .firstName(employee.getFirstName())

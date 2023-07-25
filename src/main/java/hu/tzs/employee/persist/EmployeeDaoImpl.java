@@ -30,19 +30,20 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public Collection<Employee> getEmployees() {
         final int pageIndex = 0;
         final int pageSize = 20;
-        return employeeRepository.findAll(PageRequest.of(pageIndex, pageSize)).stream().map(this::mapEmployeeEntityToEmployee).collect(Collectors.toList());
+        return employeeRepository.findAll(PageRequest.of(pageIndex, pageSize)).stream()
+            .map(this::mapEmployeeEntityToEmployee).collect(Collectors.toList());
     }
 
     @Override
     public Employee getEmployee(int empNo) throws EmployeeNotFoundException {
         Optional<EmployeeEntity> entity = employeeRepository.findById(empNo);
-        if(entity.isEmpty()){
+        if (entity.isEmpty()) {
             throw new EmployeeNotFoundException(empNo, "Employee Not Found.", Optional.empty());
         }
         return mapEmployeeEntityToEmployee(entity.get());
     }
 
-    private Employee mapEmployeeEntityToEmployee(EmployeeEntity entity){
+    private Employee mapEmployeeEntityToEmployee(EmployeeEntity entity) {
         Employee employee = new Employee(
             entity.getEmpNo(),
             entity.getFirstName(),
