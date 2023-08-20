@@ -23,9 +23,18 @@ public class EmployeeController {
     private final EmployeeManagerService employeeManagerService;
 
     @GetMapping("")
-    public Collection<EmployeeDto> fetchAll() {
-        return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto)
-            .collect(Collectors.toList());
+    public Collection<EmployeeDto> fetchAll(
+        @RequestParam(required = false) String firstName,
+        @RequestParam(required = false) String lastName,
+        @RequestParam(required = false) String title
+    ) {
+        if (firstName == null && lastName == null && title == null) {
+            return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto)
+                .collect(Collectors.toList());
+        }
+        return employeeManagerService.getEmployees(firstName, lastName, title).stream()
+            .map(this::mapEmployeeToEmployeeDto).collect(
+                Collectors.toList());
     }
 
     @GetMapping("/{empNo}")

@@ -11,6 +11,7 @@ import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
         final int pageSize = 20;
         return employeeRepository.findAll(PageRequest.of(pageIndex, pageSize)).stream()
             .map(this::mapEmployeeEntityToEmployee).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Employee> getEmployees(String firstName, String lastName) {
+       final int pageIndex = 0;
+       final int pageSize = 20;
+       EmployeeEntity.EmployeeEntityBuilder exampleEmployeeBuilder = EmployeeEntity.builder();
+       exampleEmployeeBuilder.empNo(null);
+//       exampleEmployeeBuilder.gender(null);
+       if(firstName != null && !firstName.isBlank()){
+           exampleEmployeeBuilder.firstName(firstName);
+       }
+       if(lastName != null && !lastName.isBlank()){
+           exampleEmployeeBuilder.lastName(lastName);
+       }
+       EmployeeEntity exampleEmployee = exampleEmployeeBuilder.build();
+       return employeeRepository.findAll(Example.of(exampleEmployee),PageRequest.of(pageIndex, pageSize)).stream().map(this::mapEmployeeEntityToEmployee).collect(
+           Collectors.toList());
     }
 
     @Override

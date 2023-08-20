@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,12 @@ public class EmployeeManagerServiceImpl implements EmployeeManagerService {
     public Collection<Employee> getEmployees() {
         return employeeDao.getEmployees();
     }
+
+    @Override
+    public Collection<Employee> getEmployees(String firstName, String lastName, String title) {
+        return employeeDao.getEmployees(firstName,lastName);
+    }
+
 
     @Override
     public Employee getEmployee(int empNo) throws EmployeeNotFoundException {
