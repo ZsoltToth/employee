@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,11 @@ public class EmployeeManagerServiceImpl implements EmployeeManagerService {
 
     @Override
     public Collection<Employee> getEmployees(String firstName, String lastName, String title) {
-        return employeeDao.getEmployees(firstName,lastName);
+        Collection<Employee> employees = employeeDao.getEmployees(firstName,lastName);
+        if(title != null && !title.isBlank()){
+            return employees.stream().filter(e -> title.equals(e.getTitle())).collect(Collectors.toList());
+        }
+        return employees;
     }
 
 
