@@ -21,6 +21,6 @@ public class EmployeeManagerServiceImpl implements EmployeeManagerService {
 
     @Override
     public Employee getEmployee(int empNo) throws EmployeeNotFoundException {
-        return null;
+        return employeeDao.getEmployee(empNo);
     }
 }

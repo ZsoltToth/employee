@@ -6,6 +6,7 @@ import hu.tzs.employee.persist.entity.EmployeeEntity;
 import hu.tzs.employee.persist.entity.SalaryEntity;
 import hu.tzs.employee.persist.entity.TitleEntity;
 import hu.tzs.employee.persist.repository.EmployeeRepository;
+import hu.tzs.employee.service.exception.EmployeeNotFoundException;
 import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,18 +30,30 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public Collection<Employee> getEmployees() {
         final int pageIndex = 0;
         final int pageSize = 20;
-        return employeeRepository.findAll(PageRequest.of(pageIndex, pageSize)).stream().map(entity -> {
-            Employee employee = new Employee(
-                entity.getEmpNo(),
-                entity.getFirstName(),
-                entity.getLastName(),
-                entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
-                entity.getHireDate(),
-                getCurrentTitle(entity),
-                getCurrentSalary(entity),
-                getCurrentDepartment(entity));
-            return employee;
-        }).collect(Collectors.toList());
+        return employeeRepository.findAll(PageRequest.of(pageIndex, pageSize)).stream()
+            .map(this::mapEmployeeEntityToEmployee).collect(Collectors.toList());
+    }
+
+    @Override
+    public Employee getEmployee(int empNo) throws EmployeeNotFoundException {
+        Optional<EmployeeEntity> entity = employeeRepository.findById(empNo);
+        if (entity.isEmpty()) {
+            throw new EmployeeNotFoundException(empNo, "Employee Not Found.", Optional.empty());
+        }
+        return mapEmployeeEntityToEmployee(entity.get());
+    }
+
+    private Employee mapEmployeeEntityToEmployee(EmployeeEntity entity) {
+        Employee employee = new Employee(
+            entity.getEmpNo(),
+            entity.getFirstName(),
+            entity.getLastName(),
+            entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
+            entity.getHireDate(),
+            getCurrentTitle(entity),
+            getCurrentSalary(entity),
+            getCurrentDepartment(entity));
+        return employee;
     }
 
     private String getCurrentTitle(EmployeeEntity employee) {
@@ -83,4 +97,5 @@ public class EmployeeDaoImpl implements EmployeeDao {
         DepartmentEntity currentDepartmentEntity = departmentEntities.get(0);
         return new Department(currentDepartmentEntity.getDepartmentNo(), currentDepartmentEntity.getName());
     }
+
 }
