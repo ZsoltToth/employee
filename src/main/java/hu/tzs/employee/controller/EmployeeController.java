@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,11 +29,14 @@ public class EmployeeController {
         @RequestParam(required = false) String lastName,
         @RequestParam(required = false) String title
     ) {
+        Collection<Employee> results = Collections.emptyList();
         if (firstName == null && lastName == null && title == null) {
-            return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto)
-                .collect(Collectors.toList());
+            results = employeeManagerService.getEmployees();
         }
-        return employeeManagerService.getEmployees(firstName, lastName, title).stream()
+        else{
+            results = employeeManagerService.getEmployees(firstName, lastName, title);
+        }
+        return results.stream()
             .map(this::mapEmployeeToEmployeeDto).collect(
                 Collectors.toList());
     }
