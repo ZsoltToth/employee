@@ -5,6 +5,7 @@ import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
 import org.hamcrest.collection.IsCollectionWithSize;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -66,6 +67,19 @@ class EmployeeControllerTest {
         // then
         assertNotNull(controller);
 
+    }
+
+    @Test
+    @DisplayName("Get Employee by Id")
+    public void shouldReturnEmployeeWhenEmployeeNoIsValidAndEmployeeExists() throws Exception{
+        // given
+        final int EMPLOYEE_NO = 1234;
+        when(service.getEmployee(EMPLOYEE_NO)).thenReturn(TestDataProvider.getEmployee());
+        // when
+        mockMvc.perform(get(String.format("/api/employees/%d",EMPLOYEE_NO)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        // then
     }
 
 
