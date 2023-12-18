@@ -84,7 +84,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-    @DisplayName("Get Empoyee by Id should return 404 when Employee is not found")
+    @DisplayName("Get Employee by Id should return 404 when Employee is not found")
     public void shouldReturn404WhenEmployeeNotFound() throws Exception{
         // given
         final int NON_EXISTING_EMPLOYEE_NUMBER = 1111;

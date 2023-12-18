@@ -63,11 +63,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     private Employee mapEmployeeEntityToEmployee(EmployeeEntity entity) {
+        Gender gender = null;
+        if (entity.getGender() != null) {
+            gender = entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE;
+        }
         Employee employee = new Employee(
             entity.getEmpNo(),
             entity.getFirstName(),
             entity.getLastName(),
-            entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
+            gender,
             entity.getHireDate(),
             getCurrentTitle(entity),
             getCurrentSalary(entity),
