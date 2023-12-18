@@ -9,5 +9,7 @@ public interface EmployeeDao {
 
     Collection<Employee> getEmployees();
 
+    Collection<Employee> getEmployees(String firstName, String lastName);
+
     Employee getEmployee(int empNo) throws EmployeeNotFoundException;
 }

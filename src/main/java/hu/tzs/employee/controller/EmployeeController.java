@@ -7,12 +7,14 @@ import hu.tzs.employee.service.model.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,13 +25,24 @@ public class EmployeeController {
     private final EmployeeManagerService employeeManagerService;
 
     @GetMapping("")
-    public Collection<EmployeeDto> fetchAll() {
-        return employeeManagerService.getEmployees().stream().map(this::mapEmployeeToEmployeeDto)
-            .collect(Collectors.toList());
+    public Collection<EmployeeDto> fetchAll(
+        @RequestParam(required = false) String firstName,
+        @RequestParam(required = false) String lastName,
+        @RequestParam(required = false) String title
+    ) {
+        Collection<Employee> results = Collections.emptyList();
+        if (firstName == null && lastName == null && title == null) {
+            results = employeeManagerService.getEmployees();
+        } else {
+            results = employeeManagerService.getEmployees(firstName, lastName, title);
+        }
+        return results.stream()
+            .map(this::mapEmployeeToEmployeeDto).collect(
+                Collectors.toList());
     }
 
     @GetMapping("/{empNo}")
-    public EmployeeDto fetchEmployee(@RequestParam int empNo) {
+    public EmployeeDto fetchEmployee(@PathVariable int empNo) {
         try {
             return mapEmployeeToEmployeeDto(employeeManagerService.getEmployee(empNo));
         } catch (EmployeeNotFoundException e) {

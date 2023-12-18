@@ -1,10 +1,12 @@
 package hu.tzs.employee.controller;
 
 import hu.tzs.employee.service.EmployeeManagerService;
+import hu.tzs.employee.service.exception.EmployeeNotFoundException;
 import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
 import org.hamcrest.collection.IsCollectionWithSize;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -66,6 +68,32 @@ class EmployeeControllerTest {
         // then
         assertNotNull(controller);
 
+    }
+
+    @Test
+    @DisplayName("Get Employee by Id - Happy Path")
+    public void shouldReturnEmployeeWhenEmployeeNoIsValidAndEmployeeExists() throws Exception{
+        // given
+        final int EMPLOYEE_NO = 1234;
+        when(service.getEmployee(EMPLOYEE_NO)).thenReturn(TestDataProvider.getEmployee());
+        // when
+        mockMvc.perform(get(String.format("/api/employees/%d",EMPLOYEE_NO)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        // then
+    }
+
+    @Test
+    @DisplayName("Get Employee by Id should return 404 when Employee is not found")
+    public void shouldReturn404WhenEmployeeNotFound() throws Exception{
+        // given
+        final int NON_EXISTING_EMPLOYEE_NUMBER = 1111;
+        when(service.getEmployee(NON_EXISTING_EMPLOYEE_NUMBER))
+            .thenThrow(new EmployeeNotFoundException(NON_EXISTING_EMPLOYEE_NUMBER, "Not Found"));
+        // when
+        mockMvc.perform(get(String.format("/api/employees/%d",NON_EXISTING_EMPLOYEE_NUMBER)))
+            .andExpect(status().is4xxClientError());
+        // then
     }
 
 

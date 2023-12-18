@@ -11,6 +11,7 @@ import hu.tzs.employee.service.model.Department;
 import hu.tzs.employee.service.model.Employee;
 import hu.tzs.employee.service.model.Gender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
+    public Collection<Employee> getEmployees(String firstName, String lastName) {
+        final int pageIndex = 0;
+        final int pageSize = 20;
+        EmployeeEntity.EmployeeEntityBuilder exampleEmployeeBuilder = EmployeeEntity.builder();
+        exampleEmployeeBuilder.empNo(null);
+        if (firstName != null && !firstName.isBlank()) {
+            exampleEmployeeBuilder.firstName(firstName);
+        }
+        if (lastName != null && !lastName.isBlank()) {
+            exampleEmployeeBuilder.lastName(lastName);
+        }
+        EmployeeEntity exampleEmployee = exampleEmployeeBuilder.build();
+        return employeeRepository.findAll(Example.of(exampleEmployee), PageRequest.of(pageIndex, pageSize)).stream()
+            .map(this::mapEmployeeEntityToEmployee).collect(
+                Collectors.toList());
+    }
+
+    @Override
     public Employee getEmployee(int empNo) throws EmployeeNotFoundException {
         Optional<EmployeeEntity> entity = employeeRepository.findById(empNo);
         if (entity.isEmpty()) {
@@ -44,11 +63,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     private Employee mapEmployeeEntityToEmployee(EmployeeEntity entity) {
+        Gender gender = null;
+        if (entity.getGender() != null) {
+            gender = entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE;
+        }
         Employee employee = new Employee(
             entity.getEmpNo(),
             entity.getFirstName(),
             entity.getLastName(),
-            entity.getGender() == 'M' ? Gender.MALE : Gender.FEMALE,
+            gender,
             entity.getHireDate(),
             getCurrentTitle(entity),
             getCurrentSalary(entity),

@@ -1,6 +1,7 @@
 package hu.tzs.employee.persist.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -23,7 +25,7 @@ public class EmployeeEntity {
 
     @Id
     @Column(name = "emp_no")
-    private int empNo;
+    private Integer empNo;
 
     @Column(name = "first_name")
     private String firstName;
@@ -31,7 +33,7 @@ public class EmployeeEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    private char gender;
+    private Character gender;
 
     @Column(name = "hire_date")
     private Date hireDate;

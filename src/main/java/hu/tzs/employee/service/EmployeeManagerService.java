@@ -9,5 +9,7 @@ public interface EmployeeManagerService {
 
     Collection<Employee> getEmployees();
 
+    Collection<Employee> getEmployees(String firstName, String lastName, String title);
+
     Employee getEmployee(int empNo) throws EmployeeNotFoundException;
 }
